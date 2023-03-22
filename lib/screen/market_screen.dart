@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:js_util';
-
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
@@ -10,6 +8,7 @@ import 'package:tp_fruit/class/fruits.dart';
 import 'package:tp_fruit/screen/cart_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:tp_fruit/widget/fruit_preview.dart';
+import 'package:tp_fruit/widget/season_filter.dart';
 
 class FruitMaster extends StatefulWidget {
   FruitMaster({super.key});
@@ -53,24 +52,8 @@ class _FruitMasterState extends State<FruitMaster> {
               return Text('Total panier ${model.totalPriceFormat()}');
             })),
             body: Column(children: [
-              Row(children: [
-                Consumer<FruitsModel>(builder: (context, model, child) {
-                  return DropdownButton(
-                    value: model.seasonSelected,
-                    items: const [
-                      DropdownMenuItem(value: "", child: Text("Tous")),
-                      DropdownMenuItem(
-                          value: "Printemps", child: Text("Printemps")),
-                      DropdownMenuItem(value: "Eté", child: Text("Été")),
-                      DropdownMenuItem(
-                          value: "Automne", child: Text("Automne")),
-                      DropdownMenuItem(value: "Hiver", child: Text("Hiver")),
-                    ],
-                    onChanged: (newSeasonSelected) =>
-                        Provider.of<FruitsModel>(context, listen: false)
-                            .editSeasonFilter(newSeasonSelected!),
-                  );
-                }),
+              Row(children: const [
+                SeasonFilter(),
               ]),
               Flexible(child:
                   Consumer<FruitsModel>(builder: (context, model, child) {

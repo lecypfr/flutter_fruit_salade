@@ -31,7 +31,9 @@ class FruitDetailsScreen extends StatelessWidget {
             child: Row(
           children: [
             Flexible(child: Image.asset("images/${fruit.name}.png")),
-            QuantityBadge(fruit: fruit)
+            Consumer<CartModel>(builder: (context, model, child) {
+              return QuantityBadge(quantity: model.quantityOf(fruit));
+            })
           ],
         )),
         Expanded(

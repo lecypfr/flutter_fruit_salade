@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:tp_fruit/class/cart.dart';
 import 'package:tp_fruit/class/fruit.dart';
 import 'package:tp_fruit/screen/fruit_details_screen.dart';
-import 'package:money_formatter/money_formatter.dart';
 import 'package:tp_fruit/widget/quantity_badge.dart';
 
 class FruitPreview extends StatelessWidget {
@@ -20,37 +19,33 @@ class FruitPreview extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    MoneyFormatter fmf = MoneyFormatter(
-        amount: fruit.price, settings: MoneyFormatterSettings(symbol: '€'));
-
     return ListTile(
       leading: Image.asset("images/${fruit.image}"),
-      title: Text(fruit.name),
-      subtitle: quantity == 0
-          ? Text(fmf.output.symbolOnRight)
-          : Text("${fmf.output.symbolOnRight} | Dans votre panier : $quantity"),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(fruit.name),
+          Consumer<CartModel>(builder: (context, model, child) {
+            return QuantityBadge(quantity: model.quantityOf(fruit));
+          })
+        ],
+      ),
       tileColor: fruit.color,
       onTap: () => Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => FruitDetailsScreen(fruit: fruit))),
-      trailing: Wrap(
-        children: [
-          QuantityBadge(fruit: fruit),
-          buttonTrailingIsDelete
-              ? IconButton(
-                  onPressed: () =>
-                      Provider.of<CartModel>(context, listen: false)
-                          .remove(fruit),
-                  icon: const Icon(Icons.remove_shopping_cart),
-                )
-              : IconButton(
-                  onPressed: () =>
-                      Provider.of<CartModel>(context, listen: false).add(fruit),
-                  icon: const Icon(Icons.add_shopping_cart),
-                ),
-        ],
-      ),
+      trailing: buttonTrailingIsDelete
+          ? IconButton(
+              onPressed: () =>
+                  Provider.of<CartModel>(context, listen: false).remove(fruit),
+              icon: const Icon(Icons.remove_shopping_cart),
+            )
+          : IconButton(
+              onPressed: () =>
+                  Provider.of<CartModel>(context, listen: false).add(fruit),
+              icon: const Icon(Icons.add_shopping_cart),
+            ),
     );
   }
 }

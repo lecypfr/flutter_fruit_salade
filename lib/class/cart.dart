@@ -44,6 +44,15 @@ class CartModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  int quantityOf(Fruit fruit) {
+    if (_content.any((cartItem) => cartItem.fruit == fruit)) {
+      return _content[_content.indexWhere((element) => element.fruit == fruit)]
+          .quantity;
+    } else {
+      return 0;
+    }
+  }
+
   double totalPrice() {
     return _content
         .map((cartItem) => cartItem)
