@@ -4,6 +4,7 @@ import 'package:tp_fruit/class/cart.dart';
 import 'package:tp_fruit/class/fruit.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:tp_fruit/widget/quantity_badge.dart';
 
 class FruitDetailsScreen extends StatelessWidget {
   final Fruit fruit;
@@ -27,8 +28,12 @@ class FruitDetailsScreen extends StatelessWidget {
       ),
       body: Column(children: [
         Card(
-          child: Image.asset("images/${fruit.name}.png"),
-        ),
+            child: Row(
+          children: [
+            Flexible(child: Image.asset("images/${fruit.name}.png")),
+            QuantityBadge(fruit: fruit)
+          ],
+        )),
         Expanded(
             child: FlutterMap(
           options: MapOptions(

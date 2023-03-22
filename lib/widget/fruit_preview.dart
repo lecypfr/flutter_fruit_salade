@@ -36,7 +36,7 @@ class FruitPreview extends StatelessWidget {
               builder: (context) => FruitDetailsScreen(fruit: fruit))),
       trailing: Wrap(
         children: [
-          const QuantityBadge(),
+          QuantityBadge(fruit: fruit),
           buttonTrailingIsDelete
               ? IconButton(
                   onPressed: () =>
