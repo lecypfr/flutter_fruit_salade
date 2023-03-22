@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'dart:js_util';
 
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:tp_fruit/class/cart.dart';
 import 'package:tp_fruit/class/fruit.dart';
+import 'package:tp_fruit/class/fruits.dart';
 import 'package:tp_fruit/screen/cart_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:tp_fruit/widget/fruit_preview.dart';
@@ -19,7 +21,7 @@ class FruitMaster extends StatefulWidget {
 }
 
 class _FruitMasterState extends State<FruitMaster> {
-  int pageIndex = 0;
+  String seasonSelected = "";
 
   Future getFruit() async {
     final response = await http
@@ -44,16 +46,42 @@ class _FruitMasterState extends State<FruitMaster> {
       future: getFruit(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          List<Fruit> fruits = snapshot.data;
+          Provider.of<FruitsModel>(context, listen: false).set(snapshot.data);
           return Scaffold(
             appBar: AppBar(
-                title: Consumer<CartModel>(builder: (context, cart, child) {
-              return Text('Total panier ${cart.totalPriceFormat()}');
+                title: Consumer<CartModel>(builder: (context, model, child) {
+              return Text('Total panier ${model.totalPriceFormat()}');
             })),
-            body: ListView(
-              children:
-                  fruits.map((fruit) => FruitPreview(fruit: fruit)).toList(),
-            ),
+            body: Column(children: [
+              Row(children: [
+                Consumer<FruitsModel>(builder: (context, model, child) {
+                  return DropdownButton(
+                    value: model.seasonSelected,
+                    items: const [
+                      DropdownMenuItem(value: "", child: Text("Tous")),
+                      DropdownMenuItem(
+                          value: "Printemps", child: Text("Printemps")),
+                      DropdownMenuItem(value: "Eté", child: Text("Été")),
+                      DropdownMenuItem(
+                          value: "Automne", child: Text("Automne")),
+                      DropdownMenuItem(value: "Hiver", child: Text("Hiver")),
+                    ],
+                    onChanged: (newSeasonSelected) =>
+                        Provider.of<FruitsModel>(context, listen: false)
+                            .editSeasonFilter(newSeasonSelected!),
+                  );
+                }),
+              ]),
+              Flexible(child:
+                  Consumer<FruitsModel>(builder: (context, model, child) {
+                // return Text(cart.seasonSelected);
+                return ListView(
+                  children: model.fruits
+                      .map((fruit) => FruitPreview(fruit: fruit))
+                      .toList(),
+                );
+              }))
+            ]),
             floatingActionButton: FloatingActionButton(
               onPressed: () => Navigator.push(context,
                   MaterialPageRoute(builder: (context) => const CartState())),

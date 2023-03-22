@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tp_fruit/class/cart.dart';
+import 'package:tp_fruit/class/fruits.dart';
 import 'package:tp_fruit/screen/market_screen.dart';
 
 void main() {
@@ -8,6 +9,7 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => CartModel()),
+        ChangeNotifierProvider(create: (context) => FruitsModel())
       ],
       child: const MyApp(),
     ),
