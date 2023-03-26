@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tp_fruit/class/cart.dart';
+import 'package:tp_fruit/providers/cart_provider.dart';
 import 'package:tp_fruit/class/fruit.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -21,8 +21,8 @@ class FruitDetailsScreen extends StatelessWidget {
         title: Text(fruit.name),
         actions: [
           IconButton(
-              onPressed: () =>
-                  Provider.of<CartModel>(context, listen: false).remove(fruit),
+              onPressed: () => Provider.of<CartProvider>(context, listen: false)
+                  .remove(fruit),
               icon: const Icon(Icons.remove_shopping_cart))
         ],
       ),
@@ -31,7 +31,7 @@ class FruitDetailsScreen extends StatelessWidget {
             child: Row(
           children: [
             Flexible(child: Image.asset("images/${fruit.name}.png")),
-            Consumer<CartModel>(builder: (context, model, child) {
+            Consumer<CartProvider>(builder: (context, model, child) {
               return QuantityBadge(quantity: model.quantityOf(fruit));
             })
           ],
@@ -70,7 +70,7 @@ class FruitDetailsScreen extends StatelessWidget {
       ]),
       floatingActionButton: FloatingActionButton(
         onPressed: () =>
-            Provider.of<CartModel>(context, listen: false).add(fruit),
+            Provider.of<CartProvider>(context, listen: false).add(fruit),
         tooltip: 'Increment',
         child: const Icon(Icons.add_shopping_cart),
       ),

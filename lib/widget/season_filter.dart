@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tp_fruit/class/fruits.dart';
+import 'package:tp_fruit/providers/fruits_provider.dart';
 
 class SeasonFilter extends StatelessWidget {
   const SeasonFilter({super.key});
@@ -8,7 +8,7 @@ class SeasonFilter extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return Consumer<FruitsModel>(builder: (context, model, child) {
+    return Consumer<FruitsProvider>(builder: (context, model, child) {
       return DropdownButton(
         value: model.seasonSelected,
         items: const [
@@ -19,7 +19,7 @@ class SeasonFilter extends StatelessWidget {
           DropdownMenuItem(value: "Hiver", child: Text("Hiver")),
         ],
         onChanged: (newSeasonSelected) =>
-            Provider.of<FruitsModel>(context, listen: false)
+            Provider.of<FruitsProvider>(context, listen: false)
                 .editSeasonFilter(newSeasonSelected!),
       );
     });

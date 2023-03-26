@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tp_fruit/class/cart.dart';
+import 'package:tp_fruit/providers/cart_provider.dart';
 import 'package:tp_fruit/class/fruit.dart';
 import 'package:tp_fruit/screen/fruit_details_screen.dart';
 import 'package:tp_fruit/widget/quantity_badge.dart';
@@ -25,7 +25,7 @@ class FruitPreview extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(fruit.name),
-          Consumer<CartModel>(builder: (context, model, child) {
+          Consumer<CartProvider>(builder: (context, model, child) {
             return QuantityBadge(quantity: model.quantityOf(fruit));
           })
         ],
@@ -37,13 +37,13 @@ class FruitPreview extends StatelessWidget {
               builder: (context) => FruitDetailsScreen(fruit: fruit))),
       trailing: buttonTrailingIsDelete
           ? IconButton(
-              onPressed: () =>
-                  Provider.of<CartModel>(context, listen: false).remove(fruit),
+              onPressed: () => Provider.of<CartProvider>(context, listen: false)
+                  .remove(fruit),
               icon: const Icon(Icons.remove_shopping_cart),
             )
           : IconButton(
               onPressed: () =>
-                  Provider.of<CartModel>(context, listen: false).add(fruit),
+                  Provider.of<CartProvider>(context, listen: false).add(fruit),
               icon: const Icon(Icons.add_shopping_cart),
             ),
     );
