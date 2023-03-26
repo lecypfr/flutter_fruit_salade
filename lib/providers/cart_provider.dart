@@ -5,7 +5,7 @@ import 'package:money_formatter/money_formatter.dart';
 import 'package:tp_fruit/class/cart_item.dart';
 import 'package:tp_fruit/class/fruit.dart';
 
-class CartModel extends ChangeNotifier {
+class CartProvider extends ChangeNotifier {
   /// Internal, private state of the cart.
   final List<CartItem> _content = [];
   // double get totalPrice =>

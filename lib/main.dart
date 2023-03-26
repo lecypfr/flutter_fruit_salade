@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tp_fruit/class/cart.dart';
-import 'package:tp_fruit/class/fruits.dart';
+import 'package:tp_fruit/providers/cart_provider.dart';
+import 'package:tp_fruit/providers/fruits_provider.dart';
+import 'package:tp_fruit/providers/user_provider.dart';
 import 'package:tp_fruit/screen/market_screen.dart';
 
 void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => CartModel()),
-        ChangeNotifierProvider(create: (context) => FruitsModel())
+        ChangeNotifierProvider(create: (context) => CartProvider()),
+        ChangeNotifierProvider(create: (context) => FruitsProvider()),
+        ChangeNotifierProvider(create: (context) => UserProvider()),
       ],
       child: const MyApp(),
     ),

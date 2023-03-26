@@ -3,7 +3,7 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:tp_fruit/class/fruit.dart';
 
-class FruitsModel extends ChangeNotifier {
+class FruitsProvider extends ChangeNotifier {
   /// Internal, private state of the cart.
   List<Fruit> _content = [];
   String seasonSelected = "";
@@ -29,7 +29,6 @@ class FruitsModel extends ChangeNotifier {
 
   void set(List<Fruit> fruits) {
     _content = fruits;
-    notifyListeners();
   }
 
   void editSeasonFilter(String newSeasonSelected) {
