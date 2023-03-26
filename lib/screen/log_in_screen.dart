@@ -19,6 +19,9 @@ class _LogInScreenState extends State<LogInScreen> {
   String errorMessage = '';
 
   Future<void> _submitForm(context) async {
+    setState(() {
+      errorMessage = "Connection en cours de traitement...";
+    });
     final user = {
       'password': _passwordController.text,
       'email': _emailController.text,
@@ -32,6 +35,9 @@ class _LogInScreenState extends State<LogInScreen> {
     );
     if (response.statusCode == 200) {
       Provider.of<UserProvider>(context, listen: false).init(response.body);
+      setState(() {
+        errorMessage = "Connexion réussie";
+      });
     } else {
       setState(() {
         _passwordController.text = '';
@@ -95,6 +101,39 @@ class _LogInScreenState extends State<LogInScreen> {
           },
           child: const Text("S'inscrire"),
         ),
+        Consumer<UserProvider>(builder: (context, model, child) {
+          return TextButton(
+            onPressed: () async {
+              setState(() {
+                errorMessage = "Opération en cours de traitement...";
+              });
+              final body = {
+                'refresh_token': model.refreshToken,
+              };
+              final response = await http.post(
+                Uri.parse('https://fruits.shrp.dev/auth/logout'),
+                headers: <String, String>{
+                  'Content-Type': 'application/json; charset=UTF-8',
+                },
+                body: jsonEncode(body),
+              );
+              if (response.statusCode == 204) {
+                setState(() {
+                  errorMessage = "Déconnexion réussie";
+                });
+              } else {
+                setState(() {
+                  errorMessage =
+                      "Un problème est survenu lors de la déconnexion";
+                });
+                // Erreur lors de l'envoi des données
+              }
+            },
+            child: const Text(
+              "Se déconnecter",
+            ),
+          );
+        }),
       ]),
     );
   }
